@@ -1,0 +1,39 @@
+<h2>Patient Dashboard</h2>
+<p *ngIf="patientProfile" style="color:#6b7280;">Welcome back, {{ patientProfile.fullName }}</p>
+
+<div style="display:flex; gap:10px; margin-bottom:16px;">
+  <button class="btn-secondary" (click)="setTab('appointments')">My Appointments</button>
+  <button class="btn-secondary" (click)="setTab('carePlans')">My Care Plans</button>
+</div>
+
+<div *ngIf="activeTab === 'appointments'">
+  <div class="card">
+    <h3>Book a Visit</h3>
+    <div class="error-text" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success-text" *ngIf="successMessage">{{ successMessage }}</div>
+
+    <label>Caregiver</label>
+    <select [(ngModel)]="newAppointment.caregiverId">
+      <option [ngValue]="undefined" disabled selected>Select a caregiver</option>
+      <option *ngFor="let c of caregivers" [ngValue]="c.caregiverId">{{ c.fullName }} ({{ c.specialization }})</option>
+    </select>
+
+    <label>Date</label>
+    <input type="date" [(ngModel)]="newAppointment.scheduledDate" />
+
+    <label>Time Slot</label>
+    <input type="text" [(ngModel)]="newAppointment.timeSlot" placeholder="e.g. 09:00 AM - 10:00 AM" />
+
+    <button class="btn-primary" (click)="bookAppointment()">Book Appointment</button>
+  </div>
+
+  <div class="card">
+    <h3>My Appointments</h3>
+    <app-appointment-list [appointments]="appointments" [canManage]="false"></app-appointment-list>
+  </div>
+</div>
+
+<div *ngIf="activeTab === 'carePlans'" class="card">
+  <h3>My Care Plans</h3>
+  <app-care-plan-list [carePlans]="carePlans"></app-care-plan-list>
+</div>

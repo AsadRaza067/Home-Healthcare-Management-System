@@ -1,0 +1,47 @@
+<h2>Caregiver Dashboard</h2>
+<p *ngIf="caregiverProfile" style="color:#6b7280;">
+  Specialization: {{ caregiverProfile.specialization }}
+</p>
+
+<div style="display:flex; gap:10px; margin-bottom:16px;">
+  <button class="btn-secondary" (click)="setTab('visits')">My Visits</button>
+  <button class="btn-secondary" (click)="setTab('carePlans')">Care Plans</button>
+</div>
+
+<div *ngIf="activeTab === 'visits'" class="card">
+  <h3>Scheduled Visits</h3>
+  <app-appointment-list [appointments]="appointments" [canManage]="true"></app-appointment-list>
+</div>
+
+<div *ngIf="activeTab === 'carePlans'">
+  <div class="card">
+    <h3>Create Care Plan</h3>
+    <div class="error-text" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success-text" *ngIf="successMessage">{{ successMessage }}</div>
+
+    <label>Patient ID</label>
+    <input type="number" [(ngModel)]="newCarePlan.patientId" placeholder="Enter Patient ID" />
+
+    <label>Title</label>
+    <input type="text" [(ngModel)]="newCarePlan.title" placeholder="e.g. Post-Surgery Recovery Plan" />
+
+    <label>Description</label>
+    <textarea rows="3" [(ngModel)]="newCarePlan.description"></textarea>
+
+    <label>Medications</label>
+    <input type="text" [(ngModel)]="newCarePlan.medications" />
+
+    <label>Goals</label>
+    <input type="text" [(ngModel)]="newCarePlan.goals" />
+
+    <label>Start Date</label>
+    <input type="date" [(ngModel)]="newCarePlan.startDate" />
+
+    <button class="btn-primary" (click)="createCarePlan()">Create Care Plan</button>
+  </div>
+
+  <div class="card">
+    <h3>My Care Plans</h3>
+    <app-care-plan-list [carePlans]="carePlans"></app-care-plan-list>
+  </div>
+</div>

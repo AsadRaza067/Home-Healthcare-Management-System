@@ -1,0 +1,42 @@
+<div class="card" style="max-width:460px; margin:40px auto;">
+  <h2>Create an Account</h2>
+  <form (ngSubmit)="onSubmit()">
+    <label>Full Name</label>
+    <input type="text" [(ngModel)]="model.fullName" name="fullName" required />
+
+    <label>Email</label>
+    <input type="email" [(ngModel)]="model.email" name="email" required />
+
+    <label>Password</label>
+    <input type="password" [(ngModel)]="model.password" name="password" required />
+
+    <label>Phone</label>
+    <input type="text" [(ngModel)]="model.phone" name="phone" />
+
+    <label>Register As</label>
+    <select [(ngModel)]="model.role" name="role">
+      <option value="Patient">Patient</option>
+      <option value="Caregiver">Caregiver</option>
+      <option value="Admin">Admin</option>
+    </select>
+
+    <div *ngIf="model.role === 'Caregiver'">
+      <label>Specialization</label>
+      <input type="text" [(ngModel)]="model.specialization" name="specialization" placeholder="e.g. Registered Nurse" />
+    </div>
+
+    <div *ngIf="model.role === 'Patient'">
+      <label>Address</label>
+      <input type="text" [(ngModel)]="model.address" name="address" />
+    </div>
+
+    <p class="error-text" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <button type="submit" class="btn-primary" [disabled]="isLoading" style="width:100%;">
+      {{ isLoading ? 'Creating account...' : 'Register' }}
+    </button>
+  </form>
+  <p style="margin-top:14px; font-size:14px;">
+    Already have an account? <a routerLink="/login">Login here</a>
+  </p>
+</div>

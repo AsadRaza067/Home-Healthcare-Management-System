@@ -1,0 +1,16 @@
+<div *ngFor="let cp of carePlans" class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h3 style="margin:0;">{{ cp.title }}</h3>
+    <span class="badge badge-active">{{ cp.status }}</span>
+  </div>
+  <p style="color:#6b7280; font-size:13px; margin:6px 0;">
+    Patient: {{ cp.patientName }} &nbsp;•&nbsp; Caregiver: {{ cp.caregiverName }}
+  </p>
+  <p>{{ cp.description }}</p>
+  <p><strong>Medications:</strong> {{ cp.medications || 'None specified' }}</p>
+  <p><strong>Goals:</strong> {{ cp.goals || 'None specified' }}</p>
+  <p style="font-size:13px; color:#6b7280;">
+    {{ cp.startDate | date:'mediumDate' }} - {{ cp.endDate ? (cp.endDate | date:'mediumDate') : 'Ongoing' }}
+  </p>
+</div>
+<p *ngIf="carePlans.length === 0" style="color:#9ca3af;">No care plans found.</p>

@@ -1,0 +1,32 @@
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time Slot</th>
+      <th>Patient</th>
+      <th>Caregiver</th>
+      <th>Status</th>
+      <th *ngIf="canManage">Notes</th>
+      <th *ngIf="canManage">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let a of appointments">
+      <td>{{ a.scheduledDate | date:'mediumDate' }}</td>
+      <td>{{ a.timeSlot }}</td>
+      <td>{{ a.patientName }}</td>
+      <td>{{ a.caregiverName }}</td>
+      <td><span [class]="badgeClass(a.status)">{{ a.status }}</span></td>
+      <td *ngIf="canManage">
+        <input type="text" [(ngModel)]="notesDraft[a.appointmentId]" placeholder="Visit notes" />
+      </td>
+      <td *ngIf="canManage">
+        <button class="btn-primary" *ngIf="a.status === 'Scheduled'" (click)="markCompleted(a)">Complete</button>
+        <button class="btn-danger" *ngIf="a.status === 'Scheduled'" (click)="cancelAppointment(a)" style="margin-left:6px;">Cancel</button>
+      </td>
+    </tr>
+    <tr *ngIf="appointments.length === 0">
+      <td colspan="7" style="text-align:center; color:#9ca3af;">No appointments found.</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,16 @@
+## Backend (.NET)
+bin/
+obj/
+*.user
+.vs/
+*.suo
+
+## Frontend (Angular / Node)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+## OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,78 @@
+<h2>Admin Dashboard</h2>
+
+<div style="display:flex; gap:10px; margin-bottom:16px;">
+  <button class="btn-secondary" (click)="setTab('overview')">Overview</button>
+  <button class="btn-secondary" (click)="setTab('patients')">Patients</button>
+  <button class="btn-secondary" (click)="setTab('caregivers')">Caregivers</button>
+  <button class="btn-secondary" (click)="setTab('appointments')">Appointments</button>
+</div>
+
+<div *ngIf="activeTab === 'overview'" class="card" style="display:flex; gap:24px;">
+  <div><h3>{{ patients.length }}</h3><p>Total Patients</p></div>
+  <div><h3>{{ caregivers.length }}</h3><p>Total Caregivers</p></div>
+  <div><h3>{{ appointments.length }}</h3><p>Total Appointments</p></div>
+</div>
+
+<div *ngIf="activeTab === 'patients'" class="card">
+  <h3>Patients</h3>
+  <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th></th></tr></thead>
+    <tbody>
+      <tr *ngFor="let p of patients">
+        <td>{{ p.fullName }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.phone }}</td>
+        <td>{{ p.address }}</td>
+        <td><button class="btn-danger" (click)="deletePatient(p.patientId)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="activeTab === 'caregivers'" class="card">
+  <h3>Caregivers</h3>
+  <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Specialization</th><th>Available</th><th></th></tr></thead>
+    <tbody>
+      <tr *ngFor="let c of caregivers">
+        <td>{{ c.fullName }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.specialization }}</td>
+        <td>{{ c.isAvailable ? 'Yes' : 'No' }}</td>
+        <td><button class="btn-danger" (click)="deleteCaregiver(c.caregiverId)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="activeTab === 'appointments'">
+  <div class="card">
+    <h3>Book a Visit</h3>
+    <div class="error-text" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="success-text" *ngIf="successMessage">{{ successMessage }}</div>
+    <label>Patient</label>
+    <select [(ngModel)]="newAppointment.patientId">
+      <option [ngValue]="0" disabled>Select a patient</option>
+      <option *ngFor="let p of patients" [ngValue]="p.patientId">{{ p.fullName }}</option>
+    </select>
+
+    <label>Caregiver</label>
+    <select [(ngModel)]="newAppointment.caregiverId">
+      <option [ngValue]="0" disabled>Select a caregiver</option>
+      <option *ngFor="let c of caregivers" [ngValue]="c.caregiverId">{{ c.fullName }} ({{ c.specialization }})</option>
+    </select>
+
+    <label>Date</label>
+    <input type="date" [(ngModel)]="newAppointment.scheduledDate" />
+
+    <label>Time Slot</label>
+    <input type="text" [(ngModel)]="newAppointment.timeSlot" placeholder="e.g. 09:00 AM - 10:00 AM" />
+
+    <button class="btn-primary" (click)="bookAppointment()">Book Appointment</button>
+  </div>
+
+  <div class="card">
+    <h3>All Appointments</h3>
+    <app-appointment-list [appointments]="appointments" [canManage]="true"></app-appointment-list>
+  </div>
+</div>
